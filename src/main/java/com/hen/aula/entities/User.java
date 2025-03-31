@@ -43,8 +43,7 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.birthDate = birthDate;
-        this.password = password;
-
+        this.password = password;   
     }
 
     public Long getId() {
