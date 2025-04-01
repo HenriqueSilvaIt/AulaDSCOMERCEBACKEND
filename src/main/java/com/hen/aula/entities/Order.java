@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -81,5 +82,18 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    // Pega todos os itens
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    //Pega a lista de produtos associadas ao pedido, com isso temos
+    // uma nova lista de Produtos associado a esse pedido
+    // porque transformos a lista em  uma stream, usamos o map
+    // e criamos uma nova lista de produtos associado ao pedido com .toList
+    public List<Product> getProducts() {
+        return items.stream().map(x -> x.getProduct()).toList();
     }
 }
