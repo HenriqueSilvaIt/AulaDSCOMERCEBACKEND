@@ -22,7 +22,6 @@ public class Product {
     private Double price;
     private String imgUrl;
 
-
     @ManyToMany // Relacionamento
     @JoinTable(name = "tb_product_category", // É a tablea de junção que é criada para relacionamento muitos para muitos
             joinColumns = @JoinColumn(name = "product_id"), // Chave estrangeira dó product Id, Como essa classe é a classe product (classe que você está, o JoinColuns vai ser product id
@@ -30,7 +29,15 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")) // Chave estrangeira do category id
     private Set<Category> categories = new HashSet<>();
 
-    public Product() {
+    @OneToMany(mappedBy = "id.product") // um produto para muitos pedidos, precisa colocar o mappedBy
+    //para
+    /*/ como no OneToMany temos que colcoar como que está o nome do  atributos  da classe One (Product) na classe do lado Many(muitos) OrderItem
+ como no caso do OrderItem não tem o atributo product, o atributo product está dentro do id que está na clase OrderItemPK, temos que colocar id.product no mapped by para
+ considerar o atributo product que está dentro da classe OrderItemPK*/
+    private Set<OrderItem> items = new HashSet<>();
+
+
+   public Product() {
 
     }
 

@@ -3,6 +3,8 @@ package com.hen.aula.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -25,6 +27,9 @@ public class Order {
     //Como podemos ter um pedido sem pagamento, n vamos criar o pagamento agora
     @OneToOne(mappedBy = "order", cascade  = CascadeType.ALL)
     private Payment payment;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items  = new HashSet<>();
 
     public Order () {
 
