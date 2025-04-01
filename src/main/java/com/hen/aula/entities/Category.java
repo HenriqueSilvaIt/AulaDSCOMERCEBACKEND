@@ -3,6 +3,7 @@ package com.hen.aula.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -45,4 +46,22 @@ public class Category {
     public Set<Product> getProducts() {
         return products;
     }
+
+/*Métodos equals e hash code tem que ter em todas entidade, para comparar por exemplo uma categoria com a outra, para eu ver se uma é igual a outra comparamos pelo Id
+POR ISSO é importante criamos, o equals e hashcode  do id para comparar pelo id
+
+iMPORATNTE n setar a opção de valores nulo, que n são nulo,
+como podemos criar um objeto com Id nulo, então n vamos marcar essa opção*/
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
 }
