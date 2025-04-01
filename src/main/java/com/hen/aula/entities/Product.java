@@ -15,9 +15,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(unique = true)//unique quer dizer que esse campo e-mail, n vai ter repetição
-    // em nivel de banco, ele  n deixa haver email igual
-    private String email;
     @Column(columnDefinition = "TEXT")// varchar pode até 255 caracteres, para poder ter mias colocamos como texto
     private String description;
     private Double price;
@@ -42,10 +39,9 @@ public class Product {
 
     }
 
-    public Product(Long id, String name, String email, String description, Double price, String imgUrl) {
+    public Product(Long id, String name, String description, Double price, String imgUrl) {
         this.id = id;
         this.name = name;
-        this.email = email;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
@@ -77,14 +73,6 @@ public class Product {
 
     public Double getPrice() {
         return price;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setPrice(Double price) {

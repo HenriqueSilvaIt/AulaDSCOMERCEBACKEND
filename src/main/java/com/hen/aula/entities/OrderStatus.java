@@ -6,4 +6,9 @@ public enum OrderStatus {
     SHIPPED,
     DELIVERED,
     CANCELED;
+
+    //OrderStatus ele cria os atributos por número
+    // começando por 0 porque é enum , tipo enumerado
+    // para inserir no banco de dados tem que ser número
+
 }

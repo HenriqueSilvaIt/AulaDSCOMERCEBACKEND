@@ -18,6 +18,8 @@ public class User {
     o auto incremento para o id*/
     private Long id;
     private String name;
+    @Column(unique = true)//unique quer dizer que esse campo e-mail, n vai ter repetição
+    // em nivel de banco, ele  n deixa haver email igual
     private String email;
     private String phone;
     private LocalDate birthDate;
