@@ -3,6 +3,8 @@ package com.hen.aula.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,13 +12,13 @@ import java.util.Objects;
 @Table(name="tb_payment")
 public class Payment {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant moment;
-
 
     @OneToOne
     @MapsId // ESTAMOS DIZENDO que o mesmo

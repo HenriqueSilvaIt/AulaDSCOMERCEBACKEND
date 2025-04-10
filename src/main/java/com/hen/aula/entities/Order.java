@@ -91,7 +91,7 @@ public class Order {
     }
 
     //Pega a lista de produtos associadas ao pedido, com isso temos
-    // uma nova lista de Produtos associado a esse pedido
+    // uma nova     lista de Produtos associado a esse pedido
     // porque transformos a lista em  uma stream, usamos o map
     // e criamos uma nova lista de produtos associado ao pedido com .toList
     public List<Product> getProducts() {
