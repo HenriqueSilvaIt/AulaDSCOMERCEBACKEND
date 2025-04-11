@@ -9,11 +9,14 @@ import com.hen.aula.entities.Product;
 import com.hen.aula.repositories.ProductRepository;
 import com.hen.aula.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController // Quando aplicação rodar
@@ -38,6 +41,12 @@ public class ProductController {
        // para resumir as lihas acima return service.findById(id)
         //como o service já tem o DTO n precisa colocar essa varial
         // DTO do tipo ProductDTO
+    }
+
+    @GetMapping
+    // quando é paginado tem que ser Page não list
+    public Page<ProductDTO> findAll(Pageable pageable) { // Pageable é do data.domain do spring para paginar páginas
+        return service.findAll(pageable);
     }
 
 }
