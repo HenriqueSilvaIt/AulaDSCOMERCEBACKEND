@@ -11,10 +11,7 @@ import com.hen.aula.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +40,28 @@ public class ProductController {
         // DTO do tipo ProductDTO
     }
 
+
+    // Buscando todos os produtos páginados
     @GetMapping
     // quando é paginado tem que ser Page não list
     public Page<ProductDTO> findAll(Pageable pageable) { // Pageable é do data.domain do spring para paginar páginas
         return service.findAll(pageable);
     }
+
+    //Inserindo produto na tabela
+    @PostMapping
+    public ProductDTO insert (@RequestBody ProductDTO dto) {
+        // Ele tem o parâmetro ProductDTO que é o objeto
+        // que vai ser declarado no JSON (que esperamos receber no JSON)
+        // e para que possa colocar um objeto no corpo da requisão JSON
+        // tem que ter o @ RequestBody(responsável por dizer que esse parâmetro
+        // ProductDo dto vai ser o corpo da requisição
+        dto = service.insert(dto);
+        return dto;
+
+        // se quiser fazer direto é return service.insert(dto)
+    }
+
+
 
 }

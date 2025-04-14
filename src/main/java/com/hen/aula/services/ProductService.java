@@ -60,4 +60,29 @@ public class ProductService {
             * de product sendo inserido no product dto*/
         }
 
+        //FUnção para salvar um produto dt no banco de dados
+        @Transactional // como não é só leitura não pode  ter o read Onlu
+        public ProductDTO insert(ProductDTO dto) { // pegar os dados do PRODUCTDTO e salvar
+            // e salvar no banco de dados
+            Product product = new Product();
+            //Copiando as informações do ProductDTO que é  o parâmetro do Método
+            // para entidade Product
+            product.setName(dto.getName());
+            product.setDescription(dto.getDescription());
+            product.setPrice(dto.getPrice());
+            product.setImgUrl(dto.getImgUrl());
+
+            // Salvar novo produto  no banco com as informações do DTO
+            product = repository.save(product);
+
+
+            // retorna um DTO(para converte para DTO novamente
+
+            //RESUMO:
+            // Intanciamos o objeto product, copiamos os atributos do objeto ProductDTO
+            // salvamos o objeto Product atualizado com as informações do DTO
+            // e retornamos abaixo o objeto salvoa e atualizado
+            return new ProductDTO(product);
+        }
+
 }
