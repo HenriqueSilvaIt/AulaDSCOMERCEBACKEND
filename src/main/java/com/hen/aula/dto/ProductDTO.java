@@ -11,10 +11,9 @@ public class ProductDTO {
     private String imgUrl;
 
 
-    // Construtor padrão
-    public ProductDTO() {
-
-    }
+    //Como só vai ter métodos get não precisa do construtor padrão
+    // só o construtor com argumentos, dessa forma
+    // estamos exigindo que os dados sejam informados na hora de instanciar o objeto
 
     // Construtor  com argumentos do DTO
     public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
@@ -33,6 +32,7 @@ public class ProductDTO {
     // que já está estanciado como repository l no servic dessa form
     // new ProductDTO(product)
     public ProductDTO(Product entity) {
+
         id = entity.getId(); // NESSE CASO n precisa colocar this.id como
         // no construtor acima, porque aqui o id do ProductDTO é diferente do id Product entity
         name = entity.getName();

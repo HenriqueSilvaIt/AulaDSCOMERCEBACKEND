@@ -4,10 +4,12 @@ package com.hen.aula.controllers;
  //Vamos configurar a classe para que ela responda pela classe / producs
 
 
+import com.hen.aula.dto.CustomError;
 import com.hen.aula.dto.ProductDTO;
 import com.hen.aula.entities.Product;
 import com.hen.aula.repositories.ProductRepository;
 import com.hen.aula.services.ProductService;
+import com.hen.aula.services.execeptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +38,7 @@ public class ProductController {
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id){ // Long id é o parâmetro que vai ser o id
         // do produto, para colocar parâmetro na rota(ul) tem que colocar o @PathVariable
         // que vai casar com o value do GetMapping
-        ProductDTO dto = service.findById(id);
+         ProductDTO dto = service.findById(id);
        return ResponseEntity.ok(dto);// estamos dizendo que vai retornar o response
         // entity dto, mesagem ok  http 200 que de certo,  onde o corpo vai ser o dto
         //  dto = service.insert(dto);
