@@ -11,9 +11,11 @@ public class ProductDTO {
     private String imgUrl;
 
 
-    //Como só vai ter métodos get não precisa do construtor padrão
-    // só o construtor com argumentos, dessa forma
-    // estamos exigindo que os dados sejam informados na hora de instanciar o objeto
+// Mesmo só tendo método get aqui precisa de construtor, se não, não vai gerar
+    // a execeção correta na console, para que podemos trata-la
+    public ProductDTO () {
+
+    }
 
     // Construtor  com argumentos do DTO
     public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {

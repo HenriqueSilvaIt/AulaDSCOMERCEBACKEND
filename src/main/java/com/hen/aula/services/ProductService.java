@@ -1,13 +1,18 @@
 package com.hen.aula.services;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import com.hen.aula.entities.Product;
 import com.hen.aula.dto.ProductDTO;
 import com.hen.aula.repositories.ProductRepository;
+import com.hen.aula.services.execeptions.DataBaseException;
 import com.hen.aula.services.execeptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -89,53 +94,76 @@ public class ProductService {
 
         @Transactional // como não é leitura, não tem o only rea
         public ProductDTO update (Long id, ProductDTO dto) {
-            /*Esse método recebe 2 argumentos como parâmetro
-            *1°  é o id que vai estar na url e os detalhes do produto que vai
-            *estar no corpo da requisição*/
+            try {
+                /*Esse método recebe 2 argumentos como parâmetro
+                 *1°  é o id que vai estar na url e os detalhes do produto que vai
+                 *estar no corpo da requisição*/
 
-            //Aqui  não vamos criar um novo produto com o new ProductDTO
-            // nós vamos apenas instanciar um produto com o id do produto
-            // na qualquer queremos atualizar
+                //Aqui  não vamos criar um novo produto com o new ProductDTO
+                // nós vamos apenas instanciar um produto com o id do produto
+                // na qualquer queremos atualizar
 
-            // Instanciando produto com a referencia do Id (prepara objeto, n cria
-            // nem consulta)
-            Product entity = repository.getReferenceById(id);//essa ação
-            // getReferenceById do repository(JPA) não vai no banco de dados
-            // ao contrário do findById da JPA repository que vai no banco de dados
-            // e busca o produto, esse getReferenceById ele só prepara o objeto
-            // monitorado pela JPA, diferente quando você faz o new Product
-            // diferente também do new ProductDto que é um produto novo
-            // que não salvamos  ainda e nem buscamos no banco de dados
-            // por isso nesse caso do new ProductDTO temos que fazer
-            // responsitory.save(product) para salvar o produto no banco de dados
+                // Instanciando produto com a referencia do Id (prepara objeto, n cria
+                // nem consulta)
+                Product entity = repository.getReferenceById(id);//essa ação
+                // getReferenceById do repository(JPA) não vai no banco de dados
+                // ao contrário do findById da JPA repository que vai no banco de dados
+                // e busca o produto, esse getReferenceById ele só prepara o objeto
+                // monitorado pela JPA, diferente quando você faz o new Product
+                // diferente também do new ProductDto que é um produto novo
+                // que não salvamos  ainda e nem buscamos no banco de dados
+                // por isso nesse caso do new ProductDTO temos que fazer
+                // responsitory.save(product) para salvar o produto no banco de dados
 
-            // Copiando dados do DTO para o produto que foi instanciado acima com a referencia do Id
-            // obs: aqui quanto no método POST só tem que ser os atributos
-            // que existem no DTO e não todos os atributos do produto
-            // vamos criar o método copyENtitytoDto para copiar dados de um
-            // DTO para um produto
+                // Copiando dados do DTO para o produto que foi instanciado acima com a referencia do Id
+                // obs: aqui quanto no método POST só tem que ser os atributos
+                // que existem no DTO e não todos os atributos do produto
+                // vamos criar o método copyENtitytoDto para copiar dados de um
+                // DTO para um produto
 
-            copyDtoToEntity(dto, entity);
+                copyDtoToEntity(dto, entity);
 
             /*entity.setName(dto.getName());
             entity.setDescription(dto.getDescription());
             entity.setPrice(dto.getPrice());
             entity.setImgUrl(dto.getImgUrl());*/
 
-            // salvando produto instanciado no banco de dados
-            entity = repository.save(entity);
-            // retornando produto atualizado
-            return new ProductDTO(entity);
+                // salvando produto instanciado no banco de dados
+                entity = repository.save(entity);
+                // retornando produto atualizado
+                return new ProductDTO(entity);
+            }
+            catch (EntityNotFoundException e ) {
+                throw new ResourceNotFoundException("Recurso não encontrado");
+            }
         }
 
         //Deletando produto do banco de dados pelo Id
-        @Transactional
+        @Transactional(propagation = Propagation.SUPPORTS) /* Esse parâmetro
+         propagation, faz ele só executar a transação se esse método
+         estiver no contexto de outra transação, se não estiver ele
+         n vai envolver com o transaction e vai capturar corretamente a execeção do banco de dados
+         isso precisa pois se trata de uma exceção a nível de banco de dados
+         e não da aplicação em si*/
         // O método vai ser void porque ele só  deleta não retorna nada
         // e vai receber um id como argumento para dizer qual produto
         // será deletado
+
+        /*Exceção do delete by id ( Hoje o spring não gera mais exceção se você tentar deletar um id que não existe , antes gerava)
+como não gera mais, primeiro vamos fazer um If para testar se o id existe ou não, se não existir nós geramos a execeção personalizada
+vamos utilizar a função do JPA repository.existsById(id) que recebe o id do método como parâmetro para checar se o id existe*/
         public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            // se o id não existir, lança execeção abaixo
+            throw new ResourceNotFoundException("Recurso não encontrado");
+        } try {
+            // se existir deleta
             repository.deleteById(id);// só passar o id que essa função
             // do deleteById do Jpa deleta no banco de dado
+        } catch (DataIntegrityViolationException e) {
+                throw new DataBaseException("Falha na integridade referencial");
+            }
+
         }
 
         // método void para copiar os dados do DTO para entidade produto
