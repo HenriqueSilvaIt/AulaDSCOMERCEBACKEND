@@ -3,6 +3,7 @@ package com.hen.aula.services;
 import com.hen.aula.entities.Product;
 import com.hen.aula.dto.ProductDTO;
 import com.hen.aula.repositories.ProductRepository;
+import com.hen.aula.services.execeptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,16 +28,21 @@ public class ProductService {
         //e retorna no formato DTO
         public ProductDTO findById(Long id) {
 
-            //Vai no banco de dados do product e retorna o produto que tem esse id
-            Optional<Product> result = repository.findById(id);
-            Product product = result.get(); // pega o produto  retornado na operação acima
-            //Instanciando o ProductDTO, já copiando o resultado do produto
-            // acima que pega o produto pelo id, ai no caso só vai trazer
-            // as informações do DTO
-            ProductDTO dto  = new ProductDTO(product);
-             return dto; // retorno o produto somento em DTO
+                //Vai no banco de dados do product e retorna o produto que tem esse id
+                Product product  = repository.findById(id).orElseThrow(() ->
+                        new ResourceNotFoundException("Recurso não encontrado")); // orElseThrow
+            // pega execeção automatica do findById, porque o findById é um optional, pode
+            // retornar um id inexistente que é uma execeção, e ele pega automatico
+            // não precisa criar uma execeção personalizada para ele
+            //Optional<Product> result = repository.findById(id);
+               // Product product = result.get(); // pega o produto  retornado na operação acima
+                //Instanciando o ProductDTO, já copiando o resultado do produto
+                // acima que pega o produto pelo id, ai no caso só vai trazer
+                // as informações do DTO
+                ProductDTO dto = new ProductDTO(product);
+                return dto; // retorno o produto somento em DTO
+                //Forma resumida do código acim
 
-            //Forma resumida do código acim
 
             /*Product product = repository.findById(id).get() //  consulta o produto no banco pelo id
             * da o get para pegar o produto
