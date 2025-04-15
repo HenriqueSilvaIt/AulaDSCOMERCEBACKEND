@@ -1,6 +1,7 @@
 package com.hen.aula.entities;
 
-import jakarta.persistence.Embeddable;
+
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

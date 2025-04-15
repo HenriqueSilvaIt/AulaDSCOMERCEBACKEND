@@ -1,5 +1,11 @@
 package com.hen.aula.entities;
 
+
+
+
+
+
+
 import jakarta.persistence.*;
 
 import java.util.HashSet;

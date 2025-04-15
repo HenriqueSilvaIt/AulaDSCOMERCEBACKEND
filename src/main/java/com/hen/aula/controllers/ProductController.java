@@ -10,6 +10,7 @@ import com.hen.aula.entities.Product;
 import com.hen.aula.repositories.ProductRepository;
 import com.hen.aula.services.ProductService;
 import com.hen.aula.services.execeptions.ResourceNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,9 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
+
 
 @RestController // Quando aplicação rodar
 // essa classe vai estar na web
@@ -68,7 +67,7 @@ public class ProductController {
     // quando colocamos o ResponseEntity nós estamos dizendo
     // que o método vai retornar um response entity
     // onde corpo da resposta vai ser o dto
-    public ResponseEntity<ProductDTO> insert (@RequestBody ProductDTO dto) {
+    public ResponseEntity<ProductDTO> insert (@Valid @RequestBody ProductDTO dto) {
         // Ele tem o parâmetro ProductDTO que é o objeto
         // que vai ser declarado no JSON (que esperamos receber no JSON)
         // e para que possa colocar um objeto no corpo da requisão JSON
@@ -91,10 +90,13 @@ public class ProductController {
 
     //Atualizando Produto
     @PutMapping(value="/{id}")// a rota ul do PUT esper o id
-    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto){
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto){
         //PathVariable é para que esse parmaetro do método Long id, seja passado
         // na url como argumento e o RequestBody é para que o produto seja passado
         // no corpo da requisição
+
+        // só vai funcionar se colocar o @Valid no método que tem validação no controller
+        // tem que ser antes do @RequestBody do Dto, sempre do dto
 
         dto = service.update(id, dto); // atualiza o id e o produtoDto fornecido n URL
 

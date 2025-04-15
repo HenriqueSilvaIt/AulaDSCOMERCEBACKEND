@@ -1,5 +1,8 @@
 package com.hen.aula.entities;
 
+
+
+
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,7 +18,7 @@ public class OrderItemPK {
     private Order order;
 
     @ManyToOne
-    @JoinColumn(name = "product_id") // chave estrangeira  dentro do order
+    @JoinColumn(name = "product_id") // chave estrangeira dentro do order
     private Product product;
 
     public OrderItemPK(){
