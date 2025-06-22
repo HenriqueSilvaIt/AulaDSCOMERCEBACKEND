@@ -57,8 +57,8 @@ public class ProductService {
 
         //Operação para buscar todos produtos paginados
         @Transactional(readOnly = true)
-        public Page<ProductDTO> findAll(Pageable pageable) {
-            Page<Product> result = repository.findAll(pageable); // tem que passar o pageable para o repository
+        public Page<ProductDTO> findAll(String name, Pageable pageable) {
+            Page<Product> result = repository.searchByName(name, pageable); // tem que passar o pageable para o repository
             // porque o repository já tem  findall que recebe o pageable e retorna paginado
             return  result.map(x ->  new ProductDTO(x)); //to Lit para voltar para lista
             /* ACIMA usando o PAGE chamamos result.map direto sem stream

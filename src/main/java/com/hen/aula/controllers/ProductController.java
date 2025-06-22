@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 
-@RestController // Quando aplicação rodar
+                        @RestController // Quando aplicação rodar
 // essa classe vai estar na web
 @RequestMapping(value = "/products") // configura essa classe
 // para que ela responsa via web nessa rota e nome da rota
@@ -32,6 +32,7 @@ public class ProductController {
     // aqui ele já cria um construtor automático product para fazer a injeção
     // de dependencia, que ai eu n preciso mudar o service aqui
     // quando quiser mudar o método do service
+
 
     @GetMapping(value = "/{id}") //Método GET para retorna um ProductDTO pelo id
     public ResponseEntity<ProductDTO> findById(@PathVariable Long id){ // Long id é o parâmetro que vai ser o id
@@ -55,8 +56,12 @@ public class ProductController {
     // quando colocamos o ResponseEntity nós estamos dizendo
     // que o método vai retornar um response entity
     // onde corpo da resposta vai ser o dto
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) { // Pageable é do data.domain do spring para paginar páginas
-        Page<ProductDTO> dto = service.findAll(pageable);
+    public ResponseEntity<Page<ProductDTO>> findAll(
+            @RequestParam(name= "name", defaultValue = "")/*Request param é parâmetro de consulta
+            da rota, default valu é caso n for informado ele retorna string vaza*/
+                    String name,
+            Pageable pageable) { // Pageable é do data.domain do spring para paginar páginas
+        Page<ProductDTO> dto = service.findAll(name, pageable);
         return ResponseEntity.ok(dto); //
 
        // return service.findAll(pageable);

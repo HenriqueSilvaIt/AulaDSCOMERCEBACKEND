@@ -3,16 +3,17 @@ package com.hen.aula.entities;
 
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
+@SuppressWarnings("serial") // suprimi a reclamação do serializable
 @Entity /*Entidade  é o modelo do MVC*/
 @Table(name = "tb_user") /*Diz que é uma table e conseguimos passar o nome da tabela*/
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) /*coloca
@@ -34,6 +35,13 @@ public class User {
     ser associada a chave estrangeira do Order (client_id*/
     private List<Order> orders = new ArrayList<>(); // como é lista
     // temos que criar um método get para  o order, set n criamos para lista
+
+
+    @ManyToMany
+    @JoinTable(name  = "tb_user_role",
+        joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
 
@@ -57,8 +65,38 @@ public class User {
         this.id = id;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -101,6 +139,23 @@ public class User {
     public List<Order> getOrders() {
         return orders;
     }
+
+    // método para adicionar um perfil na coleção de perfis(roles
+    public void addRole(Role role) {
+        roles.add(role);
+    }
+
+    public boolean hasRole(String roleName) {
+        for (Role role: roles) {
+            if (role.getAuthority() == roleName) {
+                return true;
+
+            }
+        }
+            return false;
+    }
+
+
 
     @Override
     public boolean equals(Object o) {
