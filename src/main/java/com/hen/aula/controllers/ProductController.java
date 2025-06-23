@@ -6,6 +6,7 @@ package com.hen.aula.controllers;
 
 import com.hen.aula.dto.CustomError;
 import com.hen.aula.dto.ProductDTO;
+import com.hen.aula.dto.ProductMinDTO;
 import com.hen.aula.entities.Product;
 import com.hen.aula.repositories.ProductRepository;
 import com.hen.aula.services.ProductService;
@@ -57,12 +58,12 @@ public class ProductController {
     // quando colocamos o ResponseEntity nós estamos dizendo
     // que o método vai retornar um response entity
     // onde corpo da resposta vai ser o dto
-    public ResponseEntity<Page<ProductDTO>> findAll(
+    public ResponseEntity<Page<ProductMinDTO>> findAll(
             @RequestParam(name= "name", defaultValue = "")/*Request param é parâmetro de consulta
             da rota, default valu é caso n for informado ele retorna string vaza*/
                     String name,
             Pageable pageable) { // Pageable é do data.domain do spring para paginar páginas
-        Page<ProductDTO> dto = service.findAll(name, pageable);
+        Page<ProductMinDTO> dto = service.findAll(name, pageable);
         return ResponseEntity.ok(dto); //
 
        // return service.findAll(pageable);

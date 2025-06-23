@@ -1,6 +1,7 @@
 package com.hen.aula.services;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.hen.aula.dto.ProductMinDTO;
 import com.hen.aula.entities.Product;
 import com.hen.aula.dto.ProductDTO;
 import com.hen.aula.repositories.ProductRepository;
@@ -57,10 +58,10 @@ public class ProductService {
 
         //Operação para buscar todos produtos paginados
         @Transactional(readOnly = true)
-        public Page<ProductDTO> findAll(String name, Pageable pageable) {
+        public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
             Page<Product> result = repository.searchByName(name, pageable); // tem que passar o pageable para o repository
             // porque o repository já tem  findall que recebe o pageable e retorna paginado
-            return  result.map(x ->  new ProductDTO(x)); //to Lit para voltar para lista
+            return  result.map(x ->  new ProductMinDTO(x)); //to Lit para voltar para lista
             /* ACIMA usando o PAGE chamamos result.map direto sem stream
             porque o pageable já é um string do java
             result.stream().map( x -> new ProductDTO(x)).toList();
