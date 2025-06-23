@@ -3,6 +3,7 @@ package com.hen.aula.dto;
 import com.hen.aula.entities.Order;
 import com.hen.aula.entities.OrderItem;
 import com.hen.aula.entities.OrderStatus;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class OrderDTO {
 
     /* aqui entrar uma lista de itens   (orderItemDto)
      */
-
+    @NotEmpty(message = "Deve ter no mínimo um item de pedido") /*tem que te ao menos uma categoria*/
     private List<OrderItemDTO> items = new ArrayList<>();
 
 
@@ -29,6 +30,7 @@ public class OrderDTO {
         this.user = user;
         this.paymentDTO = paymentDTO;
         this.items = items;
+
     }
 
     public OrderDTO(Order entity) {
@@ -49,6 +51,7 @@ public class OrderDTO {
         for (OrderItem item: entity.getItems()) {
             items.add(new OrderItemDTO(item));
         }
+
     }
 
     public Long getId() {

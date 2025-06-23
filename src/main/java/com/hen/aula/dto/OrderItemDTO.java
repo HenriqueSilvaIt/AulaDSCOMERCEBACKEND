@@ -9,15 +9,17 @@ public class OrderItemDTO {
     private String name;
     private Double price;
     private Integer quantity;
+    private String imgUrl;
 
     /*subTotal é um dado calculado por isso não vamos colocar ele como atributo
     * aqui, vamos fazer um método depoi e um get pra ele*/
 
-    public OrderItemDTO(Integer quantity, Double price, String name, Long productId) {
+    public OrderItemDTO(Integer quantity, Double price, String name, Long productId, String imgUrl) {
         this.quantity = quantity;
         this.price = price;
         this.name = name;
         this.productId = productId;
+        this.imgUrl = imgUrl;
     }
 
     public OrderItemDTO(OrderItem entity) {
@@ -26,6 +28,7 @@ public class OrderItemDTO {
         name = entity.getProduct().getName(); /* pega nome do produto*/
         productId = entity.getProduct().getId(); /*entro no produto pelo orderItem
          e pego o id do produto com getId*/
+        imgUrl = entity.getProduct().getImgUrl();
     }
 
     public Long getProductId() {
@@ -42,6 +45,10 @@ public class OrderItemDTO {
 
     public Integer getQuantity() {
         return quantity;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 
     /*como subtotal é um item calculado
