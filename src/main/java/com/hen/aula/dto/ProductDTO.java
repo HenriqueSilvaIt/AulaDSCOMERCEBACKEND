@@ -2,10 +2,7 @@ package com.hen.aula.dto;
 
 import com.hen.aula.entities.Category;
 import com.hen.aula.entities.Product;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +23,8 @@ public class ProductDTO {
     @Size(min  = 10, message = "Descrição precisa ter no mínimo 10 caractres")
     @NotBlank
     private String description;
+    @NotNull(message = "Campo requerido") /* precisa prencher o campo
+     essa validação vem  antes que a  deibaxo*/
     @Positive(message = "O preço deve ser positivo")
     private Double price;
     private String imgUrl;

@@ -20,8 +20,15 @@ public class ValidationError extends CustomError{
         return errors;
     }
 
+
     // Método para adicionar mensagem de erro para validação dos campos na classe FieldMessage
     public void addError(String fieldName, String message) {
+
+        /*Remove o error existentente antes de adionar o novo erro
+        para n ficar vários erros mostrando na tela (meio que um histórico de erro
+         */
+        errors.removeIf(x -> x.getFieldName().equals(fieldName));
+
         errors.add(new FieldMessage(fieldName, message));
     }
 }
