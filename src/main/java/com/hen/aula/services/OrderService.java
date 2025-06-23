@@ -27,6 +27,8 @@ public class OrderService {
     // do product para pegar informações do produto do banco de dados
 
     @Autowired
+    private AuthService authService;
+    @Autowired
     private ProductRepository  productRepository;
 
     @Autowired
@@ -55,6 +57,14 @@ public class OrderService {
                 //Instanciando o ProductDTO, já copiando o resultado do produto
                 // acima que pega o produto pelo id, ai no caso só vai trazer
                 // as informações do DTO
+
+            /*Vamos lançar um 403 se o cliente n for dono do pedido ou se n for admin*/
+            authService.validateSelfOrAdmin(order.getClient().getId()); /*pega o
+             id do cliente que está fazendo a chamada desse pedido e verifica
+             se ele pode acessar ou n esse pedido, se ele for dono do pedido
+             ele acessa ou se for admin também se n for gera acesso negado*/
+
+
                 OrderDTO dto = new OrderDTO(order);
                 return dto; // retorno o produto somento em DTO
                 //Forma resumida do código acim

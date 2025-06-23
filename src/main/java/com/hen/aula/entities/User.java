@@ -145,16 +145,19 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
+    /*Verificar se o usuário tem o perfil admin */
     public boolean hasRole(String roleName) {
+        /*Para cada perfil (role) eu testo
+        *  se esse usuário tem a role que to pasando neesa list*/
         for (Role role: roles) {
             if (role.getAuthority().equals(roleName)) {
                 return true;
 
             }
         }
-            return false;
+            return false; /*se percorrer a lista de role (perfil) do meu usuário
+            e n encontrar oque informe quer dizer que ele n tem e retorna false*/
     }
-
 
 
     @Override

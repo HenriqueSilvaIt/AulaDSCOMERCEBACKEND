@@ -30,7 +30,7 @@ private OrderService service; //Injetando product service
 // quando quiser mudar o método do service
 
     /*Método, Pega o id repassa para o service e pega o order DTO */
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
 @GetMapping(value = "/{id}") //Método GET para retorna um ProductDTO pelo id
 public ResponseEntity<OrderDTO> findById(@PathVariable Long id){ // Long id é o parâmetro que vai ser o id
 // do produto, para colocar parâmetro na rota(ul) tem que colocar o @PathVariable
