@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -67,6 +68,9 @@ public class ProductController {
        // return service.findAll(pageable);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") /*Essa anotation pre authorize permite você apontar qual o perfil de usuário
+está liberado para acessar específico end-point, has hole, pega um único perfil de usuário e has any role, pega uma lista de perfis e caso usuário tenha
+alguns do perfis está autorizado acessar o recurso*/
     //Inserindo produto na tabela
     @PostMapping
     // quando colocamos o ResponseEntity nós estamos dizendo
@@ -94,6 +98,10 @@ public class ProductController {
     }
 
     //Atualizando Produto
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") /*Essa anotation pre authorize permite você apontar qual o perfil de usuário
+está liberado para acessar específico end-point, has hole, pega um único perfil de usuário e has any role, pega uma lista de perfis e caso usuário tenha
+alguns do perfis está autorizado acessar o recurso*/
+    //Inserindo produto na tabela
     @PutMapping(value="/{id}")// a rota ul do PUT esper o id
     public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto){
         //PathVariable é para que esse parmaetro do método Long id, seja passado
@@ -108,7 +116,12 @@ public class ProductController {
         return ResponseEntity.ok(dto); // ok para retornar 200 http
     }
 
-    //Deletando produto pelo id
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN')") /*Essa anotation pre authorize permite você apontar qual o perfil de usuário
+está liberado para acessar específico end-point, has hole, pega um único perfil de usuário e has any role, pega uma lista de perfis e caso usuário tenha
+alguns do perfis está autorizado acessar o recurso*/
+                            //Inserindo produto na tabela
+
+                            //Deletando produto pelo id
     @DeleteMapping(value = "/{id}")
     // o Void no responseEntity quer dizer que ele n vai retornar nada
     // só deletar
