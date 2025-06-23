@@ -1,7 +1,9 @@
 package com.hen.aula.services;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.hen.aula.dto.CategoryDTO;
 import com.hen.aula.dto.ProductMinDTO;
+import com.hen.aula.entities.Category;
 import com.hen.aula.entities.Product;
 import com.hen.aula.dto.ProductDTO;
 import com.hen.aula.repositories.ProductRepository;
@@ -174,6 +176,28 @@ vamos utilizar a função do JPA repository.existsById(id) que recebe o id do m�
             entity.setDescription(dto.getDescription());
             entity.setPrice(dto.getPrice());
             entity.setImgUrl(dto.getImgUrl());
+
+            /*Copia as categoria da entidade para o DTO*/
+
+            entity.getCagetory().clear(); /*antes de atualizar ou inserir uma nova
+            categoria no produto, eu preciso limpar a  lista de categoria e
+            deixar só as novas categoria atualizada ou inserida*/
+            for (CategoryDTO catDTo : dto.getCategories()) {
+                /*Para cada categoria DTO acima vamos instanciar
+                * uma categoria entity*/
+                Category cat = new Category();
+
+                /* e vamos fazer a entidade acima pegar os dados do DTO*/
+                cat.setId(catDTo.getId()); /*Estamos copiando que chegou no DTO (pela requisição para uma categoria
+                * entidade para categoria entidade que criamos com o New acima*/
+
+                /*Agora vamos copiar a categoria entidade, para a entidade produto*/
+                entity.getCagetory().add(cat); /*inserindo
+                a categoria na entidade produto para depois salvar o produto no banco no método
+                insert ou update*/
+
+            }
+
         }
 
 }

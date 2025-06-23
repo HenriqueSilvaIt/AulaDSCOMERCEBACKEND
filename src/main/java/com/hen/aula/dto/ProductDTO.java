@@ -1,9 +1,14 @@
 package com.hen.aula.dto;
 
+import com.hen.aula.entities.Category;
 import com.hen.aula.entities.Product;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProductDTO {
@@ -25,6 +30,8 @@ public class ProductDTO {
     private Double price;
     private String imgUrl;
 
+    @NotEmpty(message = "Deve ter no mínimo uma categoria") /*tem que te ao menos uma categoria*/
+    private List<CategoryDTO> categories = new ArrayList<>();
 
 // Mesmo só tendo método get aqui precisa de construtor, se não, não vai gerar
     // a execeção correta na console, para que podemos trata-la
@@ -56,6 +63,12 @@ public class ProductDTO {
         description = entity.getDescription();
         price = entity.getPrice();
         imgUrl = entity.getImgUrl();
+        /* pegando categorias da entitidade
+        * e copiando para o DTO     */
+        for (Category c : entity.getCagetory()) {
+            categories.add(new CategoryDTO(c)); /* adiociona
+            a categoria da entitidade categoria ao category dto*/
+        }
     }
 
 
@@ -77,5 +90,9 @@ public class ProductDTO {
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public List<CategoryDTO> getCategories() {
+        return categories;
     }
 }
